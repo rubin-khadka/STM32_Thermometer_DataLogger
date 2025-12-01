@@ -1,0 +1,26 @@
+# STM32 Project - Git Ignore
+
+# STM32CubeIDE Build Outputs
+Debug/Core/
+Debug/Drivers/
+Debug/*.elf
+Debug/*.hex
+Debug/*.bin
+Debug/*.list
+Debug/*.map
+Debug/*.o
+Debug/*.su
+Debug/*.d
+Release/
+
+# STM32CubeIDE
+/.mxproject
+/Project Backups/ 
+
+# STM32CubeMX generated
+/Drivers/CMSIS/
+/Drivers/STM32F1xx_HAL_Driver/
+/Middlewares/
+
+# remove user files created by proteus
+*.RUBIN.*
