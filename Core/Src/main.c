@@ -21,7 +21,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "i2c2.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -101,6 +101,7 @@ int main(void)
   MX_SPI2_Init();
   MX_I2C2_Init();
   /* USER CODE BEGIN 2 */
+  I2C2_Init();
 
   /* USER CODE END 2 */
 
