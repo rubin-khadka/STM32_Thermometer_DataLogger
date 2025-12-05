@@ -1,0 +1,109 @@
+/*
+ * seven_segment.c
+ *
+ *  Created on: Dec 5, 2025
+ *      Author: Rubin Khadka
+ */
+
+#include "seven_segment.h"
+#include "spi1_config.h"
+#include "main.h"
+
+// Digit Control Masks (Bits 15-8 of 16-bit SPI data)
+#define DIGIT_1  0xFE00  // 1111 1110 0000 0000
+#define DIGIT_2  0xFD00  // 1111 1101 0000 0000
+#define DIGIT_3  0xFB00  // 1111 1011 0000 0000
+#define DIGIT_4  0xF700  // 1111 0111 0000 0000
+
+// Special digit values for the segment pattern array
+#define DIGIT_BLANK     10    // Value for blank digit
+#define DIGIT_DP        11    // Value for decimal point only
+#define DIGIT_MINUS     12    // Value for minus sign
+
+const uint8_t digit_patterns[13] =
+{
+  0x3F, // 0: A,B,C,D,E,F
+  0x06, // 1: B,C
+  0x5B, // 2: A,B,D,E,G
+  0x4F, // 3: A,B,C,D,G
+  0x66, // 4: B,C,F,G
+  0x6D, // 5: A,C,D,F,G
+  0x7D, // 6: A,C,D,E,F,G
+  0x07, // 7: A,B,C
+  0x7F, // 8: A,B,C,D,E,F,G
+  0x6F, // 9: A,B,C,D,F,G
+  0x00, // 10: Blank - No segments
+  0x80, // 11: Decimal Point - DP only
+  0x40  // 12: Minus sign - Segment G only
+};
+
+const uint8_t digit_patterns_with_dp[10] =
+{
+  0xBF, // 0 with decimal point
+  0x86, // 1 with decimal point
+  0xDB, // 2 with decimal point
+  0xCF, // 3 with decimal point
+  0xE6, // 4 with decimal point
+  0xED, // 5 with decimal point
+  0xFD, // 6 with decimal point
+  0x87, // 7 with decimal point
+  0xFF, // 8 with decimal point
+  0xEF  // 9 with decimal point
+};
+
+void Temperature_To_Digit(float temperature, DisplayDigits_t *digits)
+{
+  if(temperature < 0.0f)
+  {
+    digits->digit1 = DIGIT_MINUS;
+    temperature = -temperature;
+  }
+  else
+  {
+    digits->digit1 = DIGIT_BLANK;
+  }
+
+  // Multiply by 10 to eliminate the decimal point
+  int temp_x10 = (int) (temperature * 10.0f);
+
+  // Extract digits from integers
+  int tens_digit = temp_x10 / 100;
+  int ones_digit = (temp_x10 / 10) % 10;
+  int tenths_digit = temp_x10 % 10;
+
+  digits->digit2 = tens_digit;
+  digits->digit3 = ones_digit;
+  digits->digit4 = tenths_digit;
+}
+
+void Update_Display(const DisplayDigits_t *digits)
+{
+  // Display Digit 1
+  uint16_t data1 = DIGIT_1 | digit_patterns[digits->digit1];
+  LATCH(0);
+  SPI1_Transmit16(data1);
+  LATCH(1);
+  HAL_Delay(3);
+
+  // Display Digit 2
+  uint16_t data2 = DIGIT_2 | digit_patterns[digits->digit2];
+  LATCH(0);
+  SPI1_Transmit16(data2);
+  LATCH(1);
+  HAL_Delay(3);
+
+  // Display Digit 3 with decimal point
+  uint16_t data3 = DIGIT_3 | digit_patterns_with_dp[digits->digit3];
+  LATCH(0);
+  SPI1_Transmit16(data3);
+  LATCH(1);
+  HAL_Delay(3);
+
+  // Display Digit 4
+  uint16_t data4 = DIGIT_4 | digit_patterns[digits->digit4];
+  LATCH(0);
+  SPI1_Transmit16(data4);
+  LATCH(1);
+  HAL_Delay(3);
+}
+
