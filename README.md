@@ -16,15 +16,15 @@ A embedded system built around the STM32F103C8T6 microcontroller that monitors t
 | **Microcontroller**    | STM32F103C8T6 <br> [STM32 Blue Pill Essential Circuits](https://github.com/rubin-khadka/STM32_Thermometer_DataLogger/blob/main/Docs/stm32%20blue%20pil%20circuit.png)              | Main processing unit (72 MHz Cortex-M3)  |
 | **Temperature Sensors**| 3 × LM35 (10 mV/°C, ±0.5°C accuracy)   | Analog temperature acquisition           |
 | **Display**            | 4-digit Common-Cathode 7-Segment       | Real-time temperature readout            |
-| **Shift Registers**    | 2 × 74HC595 (daisy-chained, SPI-like)  | GPIO expansion & display driving         |
+| **Shift Registers**    | 2 × 74HC595 (daisy-chained)  | GPIO expansion & display driving         |
 | **Storage**            | MicroSD Card Module (SPI interface)    | Persistent CSV logging (FAT32 support)   |
 
 ### System Configuration
-- Clock Configuration 
-    - System Clock: 72 MHz (HSE 8 MHz → PLL ×9) <br>
+#### Clock Configuration 
+System Clock: 72 MHz (HSE 8 MHz → PLL ×9) <br>
     [STM32 Clock Configuration](https://github.com/rubin-khadka/STM32_Thermometer_DataLogger/blob/main/Media/Clock_configuration.png)
 
-### ADC1 Configuration (Multi-Channel Acquisition)
+#### ADC1 Configuration (Multi-Channel Acquisition)
 
 | Parameter         | Value                                      |
 |-------------------|--------------------------------------------|
@@ -35,9 +35,7 @@ A embedded system built around the STM32F103C8T6 microcontroller that monitors t
 | **Channels**      | `PA0 → IN0`, `PA1 → IN1`, `PA2 → IN2`     |
 | **Data Alignment**| Right-aligned                                |
 
-
-
-### SPI1 Configuration (74HC595 Shift register)
+#### SPI1 Configuration (74HC595 Shift register)
 
 | Parameter           | Value                                      |
 |-------------------|--------------------------------------------|
