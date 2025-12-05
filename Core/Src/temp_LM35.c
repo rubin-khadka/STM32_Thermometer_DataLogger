@@ -34,7 +34,7 @@ void Temp_Update_All(void)
   for(int i = 0; i < NUM_SENSORS; i++)
   {
     float voltage = (adc_buffer[i] * VREF_VOLTAGE) / ADC_RESOLUTION;
-    temperature_buffer[i] = voltage * 100.0f;
+    temperature_buffer[i] = (voltage - 1.65f) * 100.0f;
   }
 }
 
