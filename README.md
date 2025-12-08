@@ -35,6 +35,7 @@ This system extends the single-sensor [STM32 Digital Thermomerter](https://githu
 | **Sampling Time** | 28.5 cycles / channel                       |
 | **Channels**      | `PA0 → IN0`, `PA1 → IN1`, `PA2 → IN2`       |
 | **Data Alignment**| Right-aligned                               |
+
 *Direct register manipulation for fine-grained control over ADC timing and triggering*
 
 #### SPI1 Configuration (74HC595 Shift Register)
